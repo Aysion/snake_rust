@@ -11,7 +11,7 @@ const BORDER_COLOR: Color = [0.0, 0.0, 0.0, 1.0];
 const GAMEOVER_COLOR: Color = [0.8, 0.0, 0.0, 0.5];
 
 const MOVING_PERIOD: f64 = 0.1;
-const RESTART_TIME: f64 = 1.0;
+const RESTART_TIME: f64 = 3.0;
 
 pub struct Game {
 	snake: Snake,
@@ -128,21 +128,12 @@ impl Game {
 	fn update_snake(&mut self, dir: Option<Direction>) {
 		if self.check_if_snake_alive(dir) {
 			self.snake.move_forward(dir);
-			self.check_eating();
+			self.check_if_food_eaten();
 		} else {
 			self.game_over = true;
 		}
 
 		self.wait_time = 0.0;
-	}
-
-	fn check_eating(&mut self) {
-		let (head_x, head_y) = self.snake.head_position();
-
-		if self.food_exists && self.food_x == head_x && self.food_y == head_y {
-			self.food_exists = false;
-			self.snake.restore_tail();
-		}
 	}
 
 	fn check_if_snake_alive(&self, dir: Option<Direction>) -> bool {
